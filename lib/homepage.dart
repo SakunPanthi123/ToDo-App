@@ -39,6 +39,15 @@ class _HomePageState extends State<HomePage> {
                 height: 500,
                 child: ListView(
                   children: snapshot.data!.docs.map((document) {
+                    Future<int> toDoCount(String docId) async {
+                      QuerySnapshot toDoCount = await API.firestore
+                          .collection('toDoPages')
+                          .doc(docId)
+                          .collection('toDos')
+                          .get();
+                      return toDoCount.size;
+                    }
+
                     Map<String, dynamic> toDoPages =
                         document.data() as Map<String, dynamic>;
                     return GestureDetector(
@@ -70,100 +79,119 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                     ),
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            final updatePageController =
-                                                TextEditingController();
-                                            updatePageController.text =
-                                                toDoPages['title'];
-                                            showDialog(
-                                                context: context,
-                                                builder: (context) {
-                                                  return Dialog(
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              15),
-                                                      child: Column(
-                                                        mainAxisSize:
-                                                            MainAxisSize.min,
-                                                        children: [
-                                                          Text(
-                                                              'Change Page Name'),
-                                                          TextField(
-                                                            controller:
-                                                                updatePageController,
+                                        FutureBuilder(
+                                            future: toDoCount(document.id),
+                                            builder: (context, snapshot) {
+                                              if (snapshot.connectionState ==
+                                                  ConnectionState.waiting) {
+                                                return CircularProgressIndicator();
+                                              }
+                                              return Text(
+                                                  '${snapshot.data.toString()}  ToDos');
+                                            }),
+                                        Row(
+                                          children: [
+                                            ElevatedButton(
+                                              onPressed: () {
+                                                final updatePageController =
+                                                    TextEditingController();
+                                                updatePageController.text =
+                                                    toDoPages['title'];
+                                                showDialog(
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return Dialog(
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(15),
+                                                          child: Column(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .min,
+                                                            children: [
+                                                              Text(
+                                                                  'Change Page Name'),
+                                                              TextField(
+                                                                controller:
+                                                                    updatePageController,
+                                                              ),
+                                                              ElevatedButton(
+                                                                onPressed: () {
+                                                                  toDoPage
+                                                                      .doc(document
+                                                                          .id)
+                                                                      .update({
+                                                                    'title':
+                                                                        updatePageController
+                                                                            .text,
+                                                                  });
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pop();
+                                                                  updatePageController
+                                                                      .text = '';
+                                                                  setState(
+                                                                      () {});
+                                                                },
+                                                                child: Text(
+                                                                    'Confirm'),
+                                                              ),
+                                                            ],
                                                           ),
-                                                          ElevatedButton(
-                                                            onPressed: () {
-                                                              toDoPage
-                                                                  .doc(document
-                                                                      .id)
-                                                                  .update({
-                                                                'title':
-                                                                    updatePageController
-                                                                        .text,
-                                                              });
-                                                              Navigator.of(
-                                                                      context)
-                                                                  .pop();
-                                                              updatePageController
-                                                                  .text = '';
-                                                              setState(() {});
-                                                            },
-                                                            child:
-                                                                Text('Confirm'),
+                                                        ),
+                                                      );
+                                                    });
+                                              },
+                                              child: Text('Update Title'),
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            ElevatedButton(
+                                              onPressed: () {
+                                                showDialog(
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return Dialog(
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(15),
+                                                          child: Column(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .min,
+                                                            children: [
+                                                              Text(
+                                                                  'Confirm delete?'),
+                                                              ElevatedButton(
+                                                                onPressed: () {
+                                                                  toDoPage
+                                                                      .doc(document
+                                                                          .id)
+                                                                      .delete();
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pop();
+                                                                  setState(
+                                                                      () {});
+                                                                },
+                                                                child: Text(
+                                                                    'Confirm'),
+                                                              ),
+                                                            ],
                                                           ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  );
-                                                });
-                                          },
-                                          child: Text('Update Title'),
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            showDialog(
-                                                context: context,
-                                                builder: (context) {
-                                                  return Dialog(
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              15),
-                                                      child: Column(
-                                                        mainAxisSize:
-                                                            MainAxisSize.min,
-                                                        children: [
-                                                          Text(
-                                                              'Confirm delete?'),
-                                                          ElevatedButton(
-                                                            onPressed: () {
-                                                              toDoPage
-                                                                  .doc(document
-                                                                      .id)
-                                                                  .delete();
-                                                              Navigator.of(
-                                                                      context)
-                                                                  .pop();
-                                                              setState(() {});
-                                                            },
-                                                            child:
-                                                                Text('Confirm'),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  );
-                                                });
-                                          },
-                                          child: Icon(Icons.delete),
+                                                        ),
+                                                      );
+                                                    });
+                                              },
+                                              child: Icon(Icons.delete),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
