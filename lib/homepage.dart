@@ -14,7 +14,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   CollectionReference get toDoPage => API.firestore.collection('toDoPages');
-  void addToDoPage() {}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
