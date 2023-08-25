@@ -55,6 +55,7 @@ class _HomePageState extends State<HomePage> {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (BuildContext context) => ToDoPage(
                                     toDoPageId: document.id,
+                                    toDoPageTitle: toDoPages['title'],
                                   )));
                         },
                         child: Padding(

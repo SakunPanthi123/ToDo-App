@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:myapp2/api.dart';
 
 class ToDoPage extends StatefulWidget {
-  const ToDoPage({super.key, required this.toDoPageId});
+  const ToDoPage(
+      {super.key, required this.toDoPageId, required this.toDoPageTitle});
   final String toDoPageId;
+  final String toDoPageTitle;
   @override
   State<ToDoPage> createState() => _ToDoPageState();
 }
@@ -40,7 +42,7 @@ class _ToDoPageState extends State<ToDoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Todos'),
+        title: Text(widget.toDoPageTitle),
         centerTitle: true,
       ),
       body: Center(
