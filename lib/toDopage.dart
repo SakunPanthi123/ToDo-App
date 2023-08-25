@@ -65,7 +65,13 @@ class _ToDoPageState extends State<ToDoPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(toDos['title']),
+                          Text(
+                            toDos['title'],
+                            style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                           Row(
                             children: [
                               ElevatedButton(
