@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
 
   void updateToDo(docId) {
     getTodo.doc(docId).update({
-      'title': toDoController.text,
+      'title': updateController.text,
     });
   }
 
