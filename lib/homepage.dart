@@ -14,6 +14,15 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   CollectionReference get toDoPage => API.firestore.collection('toDoPages');
+  Future<int> toDoCount(String docId) async {
+    final toDoCount = await API.firestore
+        .collection('toDoPages')
+        .doc(docId)
+        .collection('toDos')
+        .get();
+    return toDoCount.size;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,24 +48,16 @@ class _HomePageState extends State<HomePage> {
                 height: 500,
                 child: ListView(
                   children: snapshot.data!.docs.map((document) {
-                    Future<int> toDoCount(String docId) async {
-                      QuerySnapshot toDoCount = await API.firestore
-                          .collection('toDoPages')
-                          .doc(docId)
-                          .collection('toDos')
-                          .get();
-                      return toDoCount.size;
-                    }
-
                     Map<String, dynamic> toDoPages =
                         document.data() as Map<String, dynamic>;
                     return GestureDetector(
                         onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) => ToDoPage(
-                                    toDoPageId: document.id,
-                                    toDoPageTitle: toDoPages['title'],
-                                  )));
+                          Navigator.of(context)
+                              .pushReplacement(MaterialPageRoute(
+                                  builder: (BuildContext context) => ToDoPage(
+                                        toDoPageId: document.id,
+                                        toDoPageTitle: toDoPages['title'],
+                                      )));
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(12),

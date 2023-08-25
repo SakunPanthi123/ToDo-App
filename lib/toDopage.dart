@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp2/api.dart';
+import 'package:myapp2/homepage.dart';
 
 class ToDoPage extends StatefulWidget {
   const ToDoPage(
@@ -43,7 +44,15 @@ class _ToDoPageState extends State<ToDoPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.toDoPageTitle),
-        centerTitle: true,
+        leading: InkWell(
+            borderRadius: BorderRadius.all(
+              Radius.circular(20),
+            ),
+            onTap: () {
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (BuildContext context) => HomePage()));
+            },
+            child: Icon(Icons.arrow_back)),
       ),
       body: Center(
         child: FutureBuilder(
