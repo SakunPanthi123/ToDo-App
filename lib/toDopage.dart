@@ -83,22 +83,27 @@ class _ToDoPageState extends State<ToDoPage> {
                                       context: context,
                                       builder: (context) {
                                         return Dialog(
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Text('Update the title'),
-                                              TextField(
-                                                controller: updateController,
-                                              ),
-                                              ElevatedButton(
-                                                  onPressed: () {
-                                                    updateToDo(document.id);
-                                                    Navigator.of(context).pop();
-                                                    updateController.text = '';
-                                                    setState(() {});
-                                                  },
-                                                  child: Text('Update'))
-                                            ],
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(15),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Text('Update the title'),
+                                                TextField(
+                                                  controller: updateController,
+                                                ),
+                                                ElevatedButton(
+                                                    onPressed: () {
+                                                      updateToDo(document.id);
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                      updateController.text =
+                                                          '';
+                                                      setState(() {});
+                                                    },
+                                                    child: Text('Update'))
+                                              ],
+                                            ),
                                           ),
                                         );
                                       });

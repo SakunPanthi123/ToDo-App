@@ -213,23 +213,26 @@ class _HomePageState extends State<HomePage> {
               context: context,
               builder: (context) {
                 return Dialog(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text('Create a new todo page'),
-                      TextField(
-                        controller: toDoPageController,
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          toDoPage.add({"title": toDoPageController.text});
-                          Navigator.of(context).pop();
-                          toDoPageController.text = '';
-                          setState(() {});
-                        },
-                        child: Text('Create this page'),
-                      )
-                    ],
+                  child: Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('Create a new todo page'),
+                        TextField(
+                          controller: toDoPageController,
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            toDoPage.add({"title": toDoPageController.text});
+                            Navigator.of(context).pop();
+                            toDoPageController.text = '';
+                            setState(() {});
+                          },
+                          child: Text('Create this page'),
+                        )
+                      ],
+                    ),
                   ),
                 );
               });
