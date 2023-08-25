@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:myapp2/firebase_options.dart';
 import 'package:myapp2/homepage.dart';
 
+//added a note
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
